@@ -101,7 +101,7 @@ class App extends Component {
                         onUpdState={this.onUpdState} />
                 </div>
     
-                <EmployeesList 
+                <EmployeesList asd
                     data={newData} // в данные передаем отфильтрованные данные (заменяем data)
                     onDelete={this.onDelete} 
                     onToggleProp={this.onToggleProp} 
