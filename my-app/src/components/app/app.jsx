@@ -8,6 +8,7 @@ import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
 import './app.css'; 
 
+// Реализовать фильтры и сделать домашнее заданее по инпуту
 class App extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +19,7 @@ class App extends Component {
                 {name: 'Magomed', salary: 4450, increase: true, rise: false, id: 3},
             ], 
             term: '',
-            filter: 'rise'
+            filter: 'everything'
         };
         this.maxId = 4; 
     }
@@ -71,24 +72,41 @@ class App extends Component {
         this.setState({term: term});
     }
 
-    // 1. Создаем метод филтрации (работаем через стейт filter через строку, fiilter сравнививаем со строкой, которую получаем из компонента ниже)
-    filterPost = (data, filter) => {
-        switch(filter) { // break можем не ставить (react понимает и так что нужно сделать)
-            case 'rise':
-                return data.filter(item => item.rise); // сокращенная запись, чтобы сократить - if (item.rise) {return item}
-            case 'moreThen1000':
-                return data.filter(item => item.salary > 1000)
-            default: 
-                return data
+
+    filterBtn = (data, filter) => {
+        switch (filter) {
+            case 'rise': 
+                return data.filter(item => item.rise);
+            case 'salary':
+                return data.filter(item => item.salary > 1000);
+            default:
+                return data;
         }
     }
 
+    onFilter = (filter) => {
+        this.setState({filter});
+    }
+
+    changeSalary = (newSalary, name) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.name === name) {
+                    return {...item, salary: newSalary}
+                }
+                return item;
+            })
+        }))
+    }
+    
 
     render() {
         const {data, term, filter} = this.state; // деструктуризируем стейты
         const employees = data.length;
         const bonus = data.filter(elem => elem.increase).length;
-        const newData = this.filterPost(this.searchEmp(data, term), filter); // создаем новый массив (в аргумент передаем метод, который вернет массив, и передаем filter)
+        // const newData = this.searchEmp(data, term); 
+        const newData = this.filterBtn(this.searchEmp(data, term), filter); 
+
 
         return (
             <div className="app">
@@ -97,14 +115,16 @@ class App extends Component {
                 <div className="search-panel">
                     <SearchPanel 
                         onUpdateSearch={this.onUpdateSearch} /> 
-                    <AppFilter
-                        onUpdState={this.onUpdState} />
+                    <AppFilter 
+                        stateFilter={filter}
+                        onFilter={this.onFilter}/>
                 </div>
     
-                <EmployeesList asd
+                <EmployeesList 
                     data={newData} // в данные передаем отфильтрованные данные (заменяем data)
                     onDelete={this.onDelete} 
                     onToggleProp={this.onToggleProp} 
+                    changeSalary={this.changeSalary}
                     />
                 <EmployeesAddForm 
                     onAdd={this.onAdd} 

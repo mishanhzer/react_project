@@ -1,8 +1,10 @@
-import './employees-add-form.css';
 import { Component } from 'react';
 
+// import './employees-add-form.css';
+import './employees-add-form.scss'; // импортируем SCSS файл (заменяем css файл)
+// PS: будет ошибка (нет модуля SASS) - чтобы устранить ошибку нужно устновить пакет SASS (npm i sass --save), вместо установки пакета node sass (он устарел)
 
-// Создаем компонент EmployeesAddForm
+
 class EmployeesAddForm extends Component {
     constructor(props) {
         super(props);

@@ -1,7 +1,7 @@
 import './employees-list-item.css'; // ипортируем стили (эти стили экспортируются сначала в emplyees-list.js, затем в app.js, а затем уже в index.js)
 
-// Изменяем классовый компонент на функциональный и удаляем все лишнее
-const EmployeesListItem = ({name, salary, increase, rise, onDelete, onToggleProp}) => { // получаем пропсы - свойства данных: rise, increase и методы: onToggleInrease, onToggleRise
+const EmployeesListItem = ({name, salary, increase, rise, onDelete, onToggleProp, changeSalary}) => { 
+
     let classNames = 'list-group-item d-flex justify-content-between'
     if (increase) {
         classNames += ' increase'
@@ -9,10 +9,16 @@ const EmployeesListItem = ({name, salary, increase, rise, onDelete, onToggleProp
     if (rise) {
         classNames += ' like'
     }
+
+
     return (
         <li className={classNames}>
-            <span className="list-group-item-label" onClick={onToggleProp} data-toggle='rise'>{name}</span> 
-            <input type="text" className="list-group-item-input" defaultValue={`${salary}$`}/>
+            <span 
+                className="list-group-item-label" 
+                onClick={onToggleProp} 
+                data-toggle='rise'
+                >{name}</span> 
+            <input type="text" className="list-group-item-input" defaultValue={salary} onChange={(e) => changeSalary(e.target.value, name)}/>
             <div className='d-flex justify-content-center align-items-center'>
                 <button 
                     type="button"
@@ -32,6 +38,7 @@ const EmployeesListItem = ({name, salary, increase, rise, onDelete, onToggleProp
             </div>
         </li>
     )
-}
+    }
+
 
 export default EmployeesListItem;
